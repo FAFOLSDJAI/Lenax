@@ -1,0 +1,58 @@
+#include <iostream>
+#include <cstdlib>
+
+void monitorTraffic() {
+    std::cout << "開始監控流量，按 Ctrl+C 終止..." << std::endl;
+    while (true) {
+        std::system("ifstat -S 1 1"); // 每秒更新一次流量
+        std::this_thread::sleep_for(std::chrono::seconds(10)); // 每10秒更新一次
+    }
+}
+
+void getSystemInfo() {
+    std::cout << "=== CPU 信息 ===" << std::endl;
+    std::system("lscpu");
+
+    std::cout << "\n=== 內存信息 ===" << std::endl;
+    std::system("free -h");
+
+    std::cout << "\n=== 磁碟使用情況 ===" << std::endl;
+    std::system("df -h");
+
+    std::cout << "\n=== 網絡接口狀態 ===" << std::endl;
+    std::system("ip a");
+
+    std::cout << "\n=== 網絡連接狀態 ===" << std::endl;
+    std::system("netstat -tuln");
+
+    std::cout << "\n=== 系統版本 ===" << std::endl;
+    std::system("uname -a");
+}
+
+int main() {
+    int choice;
+    while (true) {
+        std::cout << "選擇功能：" << std::endl;
+        std::cout << "1. 監控流量" << std::endl;
+        std::cout << "2. 獲取 VPS 具體信息" << std::endl;
+        std::cout << "3. 退出" << std::endl;
+        std::cout << "請輸入你的選擇：";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                monitorTraffic();
+                break;
+            case 2:
+                getSystemInfo();
+                break;
+            case 3:
+                std::cout << "退出..." << std::endl;
+                return 0;
+            default:
+                std::cout << "無效選擇，請再試一次。" << std::endl;
+                break;
+        }
+    }
+    return 0;
+}
